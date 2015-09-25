@@ -1,0 +1,8 @@
+build/*
+*.swp
+*.o
+*.a
+*.so
+*.aux
+*.pdf
+*.log
