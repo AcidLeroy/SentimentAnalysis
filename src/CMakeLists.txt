@@ -1,1 +1,1 @@
-ADD_SUBDIRECTORY(remove_stop_word)
+ADD_SUBDIRECTORY(preprocessing)
