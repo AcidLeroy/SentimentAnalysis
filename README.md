@@ -1,2 +1,2 @@
 # SentimentAnalysis
-Hadoop + Python to Perform Sentiment Analysis
+Spark + Python to Perform Sentiment Analysis
