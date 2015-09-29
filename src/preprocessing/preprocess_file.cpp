@@ -1,3 +1,9 @@
+// Usage example: 
+// 
+// ./preprocess_file ../files/stop_words.txt < .../files/input.txt > ../files/output.txt
+//
+// The above program loads stops words from a file and removes the stop
+// words for the "input.txt" file and outputs it to the "output.txt" file. 
 #include <vector> 
 #include <string> 
 #include <iostream> 
@@ -10,7 +16,7 @@
 void PrintUsage() {
   using namespace std; 
   cout << "The input parameters to this program are: \n" 
-    << "1. The comma seperated file defining the stop words.\n"
+    << "1. The comma seperated file defining the stop words.\n" << std::endl;
 }
 
 bool FilePresent(const std::string &name) {
