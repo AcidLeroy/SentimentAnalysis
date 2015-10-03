@@ -4,6 +4,7 @@
 #include <vector> 
 #include <iterator> 
 #include <sstream>
+#include <cctype>
 
 #include <gtest/gtest.h>
 
@@ -45,4 +46,58 @@ TEST(PreProcessing, RemoveStopWords) {
   bool match = std::regex_match(output.cbegin(), output.cend(), truth); 
   ASSERT_TRUE(match) << "Output is: '" << output 
   << "'. it should match this regex: " << expr << std::endl;; 
+}
+
+TEST(PreProcessing, ToUpper) {
+  std::string s{"lower"}; 
+  std::function<int(int)> f = [](int c)->int{return std::toupper(c);}; 
+  pp::ProcessChars(s, s, f); 
+  ASSERT_STREQ("LOWER", s.c_str()); 
+}
+
+TEST(PreProcessing, ToLower) {
+  std::string s{"UPPER"}; 
+  std::function<int(int)> f = [](int c)->int{return std::tolower(c);}; 
+  pp::ProcessChars(s, s, f); 
+  ASSERT_STREQ("upper", s.c_str()); 
+}
+
+
+TEST(PreProcessing, IterateLine) 
+{
+  using func_type = std::function<void(const std::string&, std::string&)>; 
+  std::vector<func_type> funcs; 
+
+  func_type print_val = [] (const std::string &in, std::string &out) {
+    out = in; 
+    std::cout << "(" << in << ", 1)" << std::endl;
+  };
+
+  func_type to_upper = [] (const std::string &in, std::string &out) {
+    pp::ToUpper(in, out);
+  };
+
+  funcs.push_back(to_upper); 
+  funcs.push_back(print_val); 
+
+  std::string s{"This, is, a single LINE!!!"}; 
+  std::string truth{"(THIS, 1)\n"
+  "(IS, 1)\n"
+  "(A, 1)\n"
+  "(SINGLE, 1)\n"
+  "(LINE, 1)\n"};
+
+  // Redirect cout.
+  std::streambuf* old_buf = std::cout.rdbuf();
+  std::ostringstream str_cout;
+  std::cout.rdbuf( str_cout.rdbuf() );
+
+  pp::IterateLine<func_type>(s, funcs); 
+
+  // Restore old cout.
+  std::cout.rdbuf( old_buf );
+
+  // Will output our Hello World! from above.
+  ASSERT_STREQ(truth.c_str(), str_cout.str().c_str()); 
+
 }

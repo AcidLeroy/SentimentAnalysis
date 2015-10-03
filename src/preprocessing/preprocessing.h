@@ -48,6 +48,39 @@ namespace preprocessing {
       RemoveWord(stop_word, output, output); 
     });
   }
+
+  void ProcessChars(const std::string &in, std::string &out, std::function<int(int)> func) {
+    out = in; 
+    std::for_each(out.begin(), out.end(), [&](char &c) {
+        c = func(c); 
+        });
+  }
+
+  void ToLower(const std::string &in, std::string &out) {
+    std::function<int(int)> f = [](int c)->int{return std::tolower(c);}; 
+    ProcessChars(in, out, f); 
+  }
+  
+  void ToUpper(const std::string &in, std::string &out) {
+    std::function<int(int)> f = [](int c)->int{return std::toupper(c);}; 
+    ProcessChars(in, out, f); 
+  }
+
+  template <typename T> 
+    void IterateLine(std::string &line, const std::vector<T> &funcs) {
+      std::regex rgx("\\w+"); 
+      auto words_begin = std::sregex_iterator(line.cbegin(), line.cend(), rgx);
+      auto words_end = std::sregex_iterator(); 
+      for(; words_begin != words_end; ++words_begin) {
+        std::string out = words_begin->str();
+        std::for_each(funcs.cbegin(), funcs.cend(),
+            [&](const T &func) { func(out, out); 
+            });
+      }
+    }
 }
 
 #endif //_SENTIMENT_ANALYSIS_PREPROCESSING_H_
+
+
+
