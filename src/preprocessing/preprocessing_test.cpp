@@ -97,7 +97,33 @@ TEST(PreProcessing, IterateLine)
   // Restore old cout.
   std::cout.rdbuf( old_buf );
 
-  // Will output our Hello World! from above.
   ASSERT_STREQ(truth.c_str(), str_cout.str().c_str()); 
-
 }
+
+TEST(PreProcessing, RemoveStopWord) {
+  const std::vector<std::string> stop_words{"is", "a"}; 
+  std::string in1{"THIS"};
+  std::string out; 
+  pp::RemoveStopWord(in1, out, stop_words); 
+  ASSERT_STREQ(in1.c_str(), out.c_str()); 
+  
+}
+TEST(PreProcessing, PreprocessLine) {
+
+  const std::string input{"This is a line"}; 
+  const std::vector<std::string> stop_words{"is", "a"}; 
+  const std::string truth{"THIS\t1\nLINE\t1\n"};
+  // Redirect cout.
+  std::streambuf* old_buf = std::cout.rdbuf();
+  std::ostringstream str_cout;
+  std::cout.rdbuf( str_cout.rdbuf() );
+
+  pp::PreprocessLine(input, stop_words); 
+
+  // Restore old cout.
+  std::cout.rdbuf( old_buf );
+
+  ASSERT_STREQ(truth.c_str(), str_cout.str().c_str()); 
+  
+}
+

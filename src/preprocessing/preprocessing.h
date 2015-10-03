@@ -67,7 +67,7 @@ namespace preprocessing {
   }
 
   template <typename T> 
-    void IterateLine(std::string &line, const std::vector<T> &funcs) {
+    void IterateLine(const std::string &line, const std::vector<T> &funcs) {
       std::regex rgx("\\w+"); 
       auto words_begin = std::sregex_iterator(line.cbegin(), line.cend(), rgx);
       auto words_end = std::sregex_iterator(); 
@@ -77,7 +77,48 @@ namespace preprocessing {
             [&](const T &func) { func(out, out); 
             });
       }
-    }
+}
+
+void RemoveStopWord(const std::string &in, std::string &out, const std::vector<std::string> &stop_words) {
+  out = in; 
+
+  std::for_each(stop_words.cbegin(), stop_words.cend(), [&out, &in](const std::string &s) {
+      std::string up; 
+      ToUpper(s, up); 
+      if (up == in)  
+      out = ""; 
+      }); 
+}
+
+void PreprocessLine(const std::string &line, const std::vector<std::string> &stop_words) {
+  using func_type = std::function<void(const std::string&, std::string&)>; 
+  std::vector<func_type> funcs; 
+
+  // 1. Make word upper case
+  func_type to_upper = [] (const std::string &in, std::string &out) {
+    out = in;
+    ToUpper(out, out);
+  };
+  funcs.push_back(to_upper); 
+
+  // 2. Remove stop words if any
+  func_type remove_stop = [&stop_words] (const std::string &in, std::string &out) {
+    RemoveStopWord(in, out, stop_words);
+  };
+  funcs.push_back(remove_stop); 
+
+  // 3. Print result
+  func_type print = [] (const std::string &in, std::string &out) {
+    out = in;
+    if (in != "") 
+      std::cout << in << "\t" << "1" << std::endl; 
+  };
+  funcs.push_back(print); 
+
+  IterateLine<func_type>(line, funcs); 
+
+}
+
 }
 
 #endif //_SENTIMENT_ANALYSIS_PREPROCESSING_H_
