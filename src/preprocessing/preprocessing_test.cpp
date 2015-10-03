@@ -108,11 +108,12 @@ TEST(PreProcessing, RemoveStopWord) {
   ASSERT_STREQ(in1.c_str(), out.c_str()); 
   
 }
+
 TEST(PreProcessing, PreprocessLine) {
 
-  const std::string input{"This is a line"}; 
+  const std::string input{"This is a line. Documenting"}; 
   const std::vector<std::string> stop_words{"is", "a"}; 
-  const std::string truth{"THIS\t1\nLINE\t1\n"};
+  const std::string truth{"THIS\t1\nLINE\t1\nDOCUMENT\t1\n"};
   // Redirect cout.
   std::streambuf* old_buf = std::cout.rdbuf();
   std::ostringstream str_cout;
@@ -124,6 +125,12 @@ TEST(PreProcessing, PreprocessLine) {
   std::cout.rdbuf( old_buf );
 
   ASSERT_STREQ(truth.c_str(), str_cout.str().c_str()); 
-  
 }
 
+TEST(PreProcessing, StemWord) {
+  std::string in{"Documenting"}; 
+  std::string truth{"Document"};
+  std::string out; 
+  pp::StemWord(in, out); 
+  ASSERT_STREQ(truth.c_str(), out.c_str()); 
+}

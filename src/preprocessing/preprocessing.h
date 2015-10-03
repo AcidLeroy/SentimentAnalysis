@@ -7,6 +7,9 @@
 #include <vector> 
 #include <iterator> 
 #include <sstream>
+#include <codecvt>
+
+#include <stemming/english_stem.h>
 
 namespace preprocessing {
   void RemovePunctuation(const std::string &input, std::string &output) {
@@ -22,6 +25,7 @@ namespace preprocessing {
     }
     return elems;
   }
+
 
   std::vector<std::string> Split(const std::string &s, char delim) {
     std::vector<std::string> elems;
@@ -90,6 +94,29 @@ void RemoveStopWord(const std::string &in, std::string &out, const std::vector<s
       }); 
 }
 
+std::wstring s2ws(const std::string& str)
+{
+  typedef std::codecvt_utf8<wchar_t> convert_typeX;
+  std::wstring_convert<convert_typeX, wchar_t> converterX;
+
+  return converterX.from_bytes(str);
+}
+
+std::string ws2s(const std::wstring& wstr)
+{
+  typedef std::codecvt_utf8<wchar_t> convert_typeX;
+  std::wstring_convert<convert_typeX, wchar_t> converterX;
+
+  return converterX.to_bytes(wstr);
+}
+
+void StemWord(const std::string &in, std::string &out) {
+  stemming::english_stem<> StemEnglish;
+  auto tmp = s2ws(in);
+  StemEnglish(tmp); 
+  out = ws2s(std::move(tmp)); 
+}
+
 void PreprocessLine(const std::string &line, const std::vector<std::string> &stop_words) {
   using func_type = std::function<void(const std::string&, std::string&)>; 
   std::vector<func_type> funcs; 
@@ -107,16 +134,22 @@ void PreprocessLine(const std::string &line, const std::vector<std::string> &sto
   };
   funcs.push_back(remove_stop); 
 
-  // 3. Print result
+  // 3. Stem the words
+  func_type stem_word = [] (const std::string &in, std::string &out) {
+    out = in; 
+    StemWord(in, out);
+  };
+  funcs.push_back(stem_word); 
+
+  // 4. Print result
   func_type print = [] (const std::string &in, std::string &out) {
     out = in;
     if (in != "") 
       std::cout << in << "\t" << "1" << std::endl; 
   };
+
   funcs.push_back(print); 
-
   IterateLine<func_type>(line, funcs); 
-
 }
 
 }

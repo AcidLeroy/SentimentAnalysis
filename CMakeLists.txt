@@ -4,8 +4,9 @@ SET(CMAKE_PROJECT_NAME "SentimentAnalysis")
 
 enable_testing()
 find_package(Gtest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
+include_directories(${GTEST_INCLUDE_DIRS} ${OLEANDAR_STEMMING})
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
+message("Oleandar stemming path: " ${OLEANDAR_STEMMING})
 
 ADD_SUBDIRECTORY(src)
 
