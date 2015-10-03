@@ -43,14 +43,13 @@ std::vector<std::string> GetStopWords(const std::string &fname) {
   return stop_words;
 }
 
-void RemoveStopWords(const std::vector<std::string>
+void Mapper(const std::vector<std::string>
     stop_words) {
   std::string line;
   while (std::cin) {
     while ( getline (std::cin, line) )
     {
-      preprocessing::RemoveStopWords(stop_words, line, line); 
-      std::cout << line << std::endl;
+      preprocessing::PreprocessLine(line, stop_words); 
     }
   }
 }
@@ -75,6 +74,6 @@ int main (int argc, char *argv[]) {
 
   // Get stop word vector
   auto stop_words = GetStopWords(comma_file); 
-  RemoveStopWords(stop_words);
+  Mapper(stop_words);
 
 }

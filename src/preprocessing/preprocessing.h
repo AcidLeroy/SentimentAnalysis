@@ -88,7 +88,7 @@ void RemoveStopWord(const std::string &in, std::string &out, const std::vector<s
 
   std::for_each(stop_words.cbegin(), stop_words.cend(), [&out, &in](const std::string &s) {
       std::string up; 
-      ToUpper(s, up); 
+      ToLower(s, up); 
       if (up == in)  
       out = ""; 
       }); 
@@ -122,22 +122,23 @@ void PreprocessLine(const std::string &line, const std::vector<std::string> &sto
   std::vector<func_type> funcs; 
 
   // 1. Make word upper case
-  func_type to_upper = [] (const std::string &in, std::string &out) {
+  func_type to_lower = [] (const std::string &in, std::string &out) {
     out = in;
-    ToUpper(out, out);
+    ToLower(out, out);
   };
-  funcs.push_back(to_upper); 
+  funcs.push_back(to_lower); 
 
   // 2. Remove stop words if any
   func_type remove_stop = [&stop_words] (const std::string &in, std::string &out) {
-    RemoveStopWord(in, out, stop_words);
+    out = in; 
+    RemoveStopWord(out, out, stop_words);
   };
   funcs.push_back(remove_stop); 
 
   // 3. Stem the words
   func_type stem_word = [] (const std::string &in, std::string &out) {
     out = in; 
-    StemWord(in, out);
+    StemWord(out, out);
   };
   funcs.push_back(stem_word); 
 
@@ -145,7 +146,7 @@ void PreprocessLine(const std::string &line, const std::vector<std::string> &sto
   func_type print = [] (const std::string &in, std::string &out) {
     out = in;
     if (in != "") 
-      std::cout << in << "\t" << "1" << std::endl; 
+      std::cout << out << "\t" << "1" << std::endl; 
   };
 
   funcs.push_back(print); 

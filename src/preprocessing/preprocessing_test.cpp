@@ -49,10 +49,10 @@ TEST(PreProcessing, RemoveStopWords) {
 }
 
 TEST(PreProcessing, ToUpper) {
-  std::string s{"lower"}; 
+  std::string s{"people"}; 
   std::function<int(int)> f = [](int c)->int{return std::toupper(c);}; 
   pp::ProcessChars(s, s, f); 
-  ASSERT_STREQ("LOWER", s.c_str()); 
+  ASSERT_STREQ("PEOPLE", s.c_str()); 
 }
 
 TEST(PreProcessing, ToLower) {
@@ -111,9 +111,9 @@ TEST(PreProcessing, RemoveStopWord) {
 
 TEST(PreProcessing, PreprocessLine) {
 
-  const std::string input{"This is a line. Documenting"}; 
+  const std::string input{"This is a line. Documenting PEOPLE, USING"}; 
   const std::vector<std::string> stop_words{"is", "a"}; 
-  const std::string truth{"THIS\t1\nLINE\t1\nDOCUMENT\t1\n"};
+  const std::string truth{"this\t1\nline\t1\ndocument\t1\npeopl\t1\nuse\t1\n"};
   // Redirect cout.
   std::streambuf* old_buf = std::cout.rdbuf();
   std::ostringstream str_cout;
