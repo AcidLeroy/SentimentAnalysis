@@ -1,4 +1,8 @@
 # SentimentAnalysis
 Spark + Python to Perform Sentiment Analysis
 
-Hey VJ!!
+
+## Dependencies
+
+- (Google Test )[https://code.google.com/p/googletest/]
+- (Oleandar Stemming Library)[https://github.com/OleanderSoftware/OleanderStemmingLibrary]
