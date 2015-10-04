@@ -8,7 +8,6 @@ SET(OLEANDER_INCLUDE_DIRS lib/OleanderStemmingLibrary)
 
 include_directories(${GTEST_INCLUDE_DIRS} ${OLEANDER_INCLUDE_DIRS})
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
-include(cmake)
 
 ADD_SUBDIRECTORY(lib/gtest-1.7.0)
 enable_testing()
