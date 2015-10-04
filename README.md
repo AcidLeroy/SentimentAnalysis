@@ -1,6 +1,3 @@
-/********************************************************************************/
-			SENTIMENT ANALYSIS, CS 567
-/********************************************************************************/
 # SentimentAnalysis
 Spark + Python to Perform Sentiment Analysis
 
@@ -10,10 +7,7 @@ Spark + Python to Perform Sentiment Analysis
 - [Oleandar Stemming Library](https://github.com/OleanderSoftware/OleanderStemmingLibrary)
 
 
-/**********************************/
-		MAPPER
-/**********************************/
-## How to build mapper
+## How to build
 ```
 git clone https://github.com/AcidLeroy/SentimentAnalysis.git
 git clone https://github.com/OleanderSoftware/OleanderStemmingLibrary.git
@@ -29,12 +23,5 @@ make test
 ```
 ./src/mapper/mapper ../files/stop_words.txt < ../files/input.txt > output.txt
 ```
-
-/**********************************/
-		REDUCER
-/*********************************/
-## How to build reducer
-g++ -o reducer reducer.cpp
-## Using Reducer
-./reducer
+## How to use the reducer
 

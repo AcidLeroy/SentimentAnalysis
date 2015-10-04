@@ -1,2 +1,3 @@
 ADD_SUBDIRECTORY(preprocessing)
 ADD_SUBDIRECTORY(mapper)
+ADD_SUBDIRECTORY(reducer)
