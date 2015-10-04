@@ -71,7 +71,7 @@ namespace preprocessing {
 
   template <typename T> 
     void IterateLine(const std::string &line, const std::vector<T> &funcs) {
-      std::regex rgx("\\w+"); 
+      std::regex rgx("[a-zA-Z]+"); 
       auto words_begin = std::sregex_iterator(line.cbegin(), line.cend(), rgx);
       auto words_end = std::sregex_iterator(); 
       for(; words_begin != words_end; ++words_begin) {
