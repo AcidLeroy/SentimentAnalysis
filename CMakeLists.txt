@@ -1,16 +1,17 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1.3)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_PROJECT_NAME "SentimentAnalysis")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+SET(OLEANDER_INCLUDE_DIRS lib/OleanderStemmingLibrary)
 
-enable_testing()
-find_package(Gtest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS} ${OLEANDAR_STEMMING})
+include_directories(${GTEST_INCLUDE_DIRS} ${OLEANDER_INCLUDE_DIRS})
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
-message("Oleandar stemming path: " ${OLEANDAR_STEMMING})
 include(cmake)
 
+ADD_SUBDIRECTORY(lib/gtest-1.7.0)
+enable_testing()
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 ADD_SUBDIRECTORY(src)
 
