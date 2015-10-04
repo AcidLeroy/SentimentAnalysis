@@ -1,5 +1,5 @@
 # SentimentAnalysis
-Spark + Python to Perform Sentiment Analysis
+Hadoop + Python to Perform Sentiment Analysis
 
 ## Dependencies
 
@@ -19,9 +19,13 @@ make test
 ```
 
 ## How to use the mapper
-```
-./src/mapper/mapper ../files/stop_words.txt < ../files/input.txt > output.txt
+```bash
+./bin/mapper ../files/stop_words.txt < ../files/input.txt > output.txt
+#Reducer only works on sorted output
+cat output.txt | sort > sorted_output.txt
 ```
 ## How to use the reducer
-./src/reducer/reducer < output.txt
+```bash
+./bin/reducer.py < sorted_output.txt
+```
 
