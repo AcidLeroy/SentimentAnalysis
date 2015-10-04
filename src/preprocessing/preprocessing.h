@@ -7,7 +7,6 @@
 #include <vector> 
 #include <iterator> 
 #include <sstream>
-#include <codecvt>
 
 #include <stemming/english_stem.h>
 
@@ -94,20 +93,18 @@ void RemoveStopWord(const std::string &in, std::string &out, const std::vector<s
       }); 
 }
 
+//Conversion only works because I am assuming 1 byte chars
 std::wstring s2ws(const std::string& str)
 {
-  typedef std::codecvt_utf8<wchar_t> convert_typeX;
-  std::wstring_convert<convert_typeX, wchar_t> converterX;
-
-  return converterX.from_bytes(str);
+  std::wstring word(str.cbegin(), str.cend());
+  return word;
 }
 
+//Conversion only works because I am assuming 1 byte chars
 std::string ws2s(const std::wstring& wstr)
 {
-  typedef std::codecvt_utf8<wchar_t> convert_typeX;
-  std::wstring_convert<convert_typeX, wchar_t> converterX;
-
-  return converterX.to_bytes(wstr);
+  std::string s(wstr.cbegin(), wstr.cend());
+  return s;
 }
 
 void StemWord(const std::string &in, std::string &out) {
