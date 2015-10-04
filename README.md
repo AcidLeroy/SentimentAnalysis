@@ -20,7 +20,7 @@ make test
 
 ## How to use the mapper
 ```bash
-./bin/mapper ../files/stop_words.txt < ../files/input.txt > output.txt
+./bin/mapper < ../files/input.txt > output.txt
 #Reducer only works on sorted output
 cat output.txt | sort > sorted_output.txt
 ```

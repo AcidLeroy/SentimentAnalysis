@@ -13,35 +13,8 @@
 
 #include "preprocessing.h"
 
-void PrintUsage() {
-  using namespace std; 
-  cout << "The input parameters to this program are: \n" 
-    << "1. The comma seperated file defining the stop words.\n" << std::endl;
-}
-
-bool FilePresent(const std::string &name) {
-  struct stat buffer;   
-  return (stat (name.c_str(), &buffer) == 0);
-}
-
-std::vector<std::string> GetStopWords(const std::string &fname) {
-  std::string line;
-  std::ifstream myfile (fname);
-  std::vector<std::string> stop_words; 
-  if (myfile.is_open())
-  {
-    while ( getline (myfile,line) )
-    {
-      auto v = preprocessing::Split(line, ','); 
-      stop_words.reserve(stop_words.size() + v.size()); 
-      stop_words.insert(stop_words.end(), v.begin(), v.end()); 
-    }
-    myfile.close();
-  }
-  else std::cerr << "Unable to open the file " << fname <<  std::endl;
-
-  return stop_words;
-}
+const std::vector<std::string> stop_words{
+  "a","able","about","across","after","all","almost","also","am","among","an","and","any","are","as","at","be","because","been","but","by","can","cannot","could","dear","did","do","does","either","else","ever","every","for","from","get","got","had","has","have","he","her","hers","him","his","how","however","i","if","in","into","is","it","its","just","least","let","like","likely","may","me","might","most","must","my","neither","no","nor","not","of","off","often","on","only","or","other","our","own","rather","said","say","says","she","should","since","so","some","than","that","the","their","them","then","there","these","they","this","tis","to","too","twas","us","wants","was","we","were","what","when","where","which","while","who","whom","why","will","with","would","yet","you","your"};
 
 void Mapper(const std::vector<std::string>
     stop_words) {
@@ -56,24 +29,7 @@ void Mapper(const std::vector<std::string>
 
 
 int main (int argc, char *argv[]) {
-  if (argc != 2) {
-    PrintUsage();
-    return -1; 
-  }
 
-  const std::string comma_file{argv[1]};
-
-  // Verify files are present
-  std::vector<std::string> files_to_check{comma_file}; 
-  std::for_each(files_to_check.cbegin(), files_to_check.cend(), [&](const std::string &s) {
-      if (!FilePresent(s)){
-      std::cerr << "File " << s << " is not present, exiting program..." << std::endl;
-      std::exit(-1); 
-      }
-      });
-
-  // Get stop word vector
-  auto stop_words = GetStopWords(comma_file); 
   Mapper(stop_words);
 
 }
