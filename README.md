@@ -9,12 +9,11 @@ Spark + Python to Perform Sentiment Analysis
 
 ## How to build
 ```
-git clone https://github.com/AcidLeroy/SentimentAnalysis.git
-git clone https://github.com/OleanderSoftware/OleanderStemmingLibrary.git
+git clone --recursive https://github.com/AcidLeroy/SentimentAnalysis.git
 cd SentimentAnalysis
 mkdir build
 cd build
-cmake .. -DOLEANDAR_STEMMING=~/<your_repo_dir>/OleanderStemmingLibrary
+cmake ..
 make -j3
 make test
 ```
@@ -24,4 +23,5 @@ make test
 ./src/mapper/mapper ../files/stop_words.txt < ../files/input.txt > output.txt
 ```
 ## How to use the reducer
+./src/reducer/reducer < output.txt
 
