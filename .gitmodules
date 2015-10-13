@@ -1,3 +1,6 @@
 [submodule "lib/OleanderStemmingLibrary"]
 	path = lib/OleanderStemmingLibrary
 	url = https://github.com/OleanderSoftware/OleanderStemmingLibrary
+[submodule "doc/reveal.js"]
+	path = doc/reveal.js
+	url = https://github.com/hakimel/reveal.js.git
