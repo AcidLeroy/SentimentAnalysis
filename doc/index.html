@@ -1,158 +1,212 @@
 <!doctype html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
 
-		<title>reveal.js - The HTML Presentation Framework</title>
+    <title>reveal.js - The HTML Presentation Framework</title>
 
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
-		<link rel="stylesheet" href="reveal.js/css/reveal.css">
-		<link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">
 
-		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
     <style>
       #emph {
         color: #FFCC00;
       }
-      </style>
-	</head>
+      #prod {
+        color: blue;
+      }
+    </style>
+  </head>
 
-	<body>
-		<div class="reveal">
+  <body>
+    <div class="reveal">
 
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section>
-					<!--<h1 style="color:red">Sentiment Analysis</h1>-->
-					<h1 id="emph">Sentiment Analysis</h1>
-					<h3>Classification of movie reviews </h3>
-					<p>
-            <small> Cody W. Eilar & Venkatesh Jatla </small>
-					</p>
-				</section>
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+        <!--<h1 style="color:red">Sentiment Analysis</h1>-->
+        <h1 id="emph">Sentiment Analysis</h1>
+        <h3>Classification of movie reviews </h3>
+        <p>
+        <small> Cody W. Eilar & Venkatesh Jatla </small>
+        </p>
+        </section>
 
-				<section>
-					<h2 id="emph">Hypothesis #1</h2>
-					<p>
-          <ul>
-            <li>Can we predict sentiment using only frequently found words in positive and negative reviews? </li>
-          </ul>
-					</p>
-				</section>
+        <section>
+        <section>
+        <h2 id="emph">Hypothesis #1</h2>
+        <p>
+        <ul>
+          <li>Can we predict sentiment using only frequently found words in positive and negative reviews? </li>
+        </ul>
+        </p>
+        </section>
 
-				<section>
-					<h2 id="emph">Hypothesis #2</h2>
-					<p>
-          <ul>
-            <li>Can we predict sentiment using bag of words per review?</li>
-          </ul>
-					</p>
-				</section>
+        <section>
+        <h2 id="emph">Preprocessing</h1>
+        <ul>
+          <li>Mapper - C++ Regex + <a href="https://github.com/OleanderSoftware/OleanderStemmingLibrary">Oleander stemming</a></li>
+          <li>Reducer - Python sum of sorted words.</li>
+        </ul>
+        </section>
 
-			<section>
-					<h1 id="emph">Preprocessing</h1>
-					<p>
-						If map-reduce is used in implementing preprocessing, give a pseudo code or block diagram
-					</p>
-					<table>
-						<tr>
-							<th> Stop Words removal </th>
-							<th> Stemming </th>
-						</tr>
-						<tr>
-							<td>
-								<ul>
-									<li> From where did we get list of stop words? </li>
-									<li> In which language is stop word removal implemented?</li>
-									<li> Is it implemented in map-reduce module?</li>
-								</ul>
-							</td>
-							<td>
-								<ul>
-									<li> Stemming library reference?</li>
-									<li> Which language is used to implement stemming?</li>
-									<li> Is it implemented in map-reduce module?</li>
-								</ul>
-							</td>
-						</tr>
-					</table>
-				</section>
+        <section>
+        <h2 id="emph">Preprocessing</h1>
+        Hadoop command: 
+					<pre><code class="hljs" data-trim contenteditable>
+mapper=~/Repos/SentimentAnalysis/build/bin/mapper
+reducer=~/Repos/SentimentAnalysis/build/bin/reducer.py
 
-				<section>
-					<h1 id="emph">Data representation</h1>
-					<ul>
-						<li> What did you get after preprocessing? How is it represented?</li>
-						<li> What are the attributes that you derived from each text file?</li>
-						<li> How does those attributes help us in determining if a review is +ve or -ve</li>
-					</ul>
-				</section>
+hdfs_dir=/user/cody/train_unsup/
+hdfs_out=/user/cody/train_unsup_out/
 
-				<section>
-					<h1 id="emph"> Classification </h1>
-					<ul>
-						<li> Which method did you chose for classifying data? Why this method? Is there something
-						in data that led you to chose this method?</li>
-					</ul>
-				</section>
+streaming=${HADOOP_HOME}/libexec/share/hadoop/tools/lib/\
+  hadoop-streaming-2.6.0.jar
 
-				<section>
-					<h1>Results!!</h1>
-					<p>
-						% success<br>
-						time taken<br>
-						confusion matrix?
-					</p>
-				</section>
+hadoop jar ${streaming} -file ${mapper} -mapper ${mapper} -file\
+  ${reducer} -reducer ${reducer} -input $hdfs_dir* \
+  -output ${hdfs_out}
+          </code></pre>
+        </section>
+        <section>
+        <h2 id="emph">Preprocessing</h1>
+        <p> 
+        The output of the reduce step is two files: <br/>
+        - One with the word counts for all positive training reviews <br/>
+        - And one with the word counts for all the negative training reviews
+        </p>
+        <img src="word_cnt.png" alt="Word Count" height="300">
+        </section>
+        
+        <section>
+        <h2 id="emph">Classification</h1>
+        <p>
+          Attempt classification using <a href="http://scikit-learn.org/stable/modules/svm.html">support vector machines</a>
+          provided by scikit learn. 
+        </p>
+        </section>
 
-			</div>
+        <section>
+        <h2 id="emph">Classification</h1>
+        <p>
+        Classifying on counts alone was not sufficient and yielded terrible results
+        , only 50%. <br/>
+        We also attempted to classify using frequencies, but that still was not 
+        enough to get results above 60%. <em> So... try again </em> 
+        </p>
+        </section>
 
-		</div>
+        </section>
 
-		<script src="reveal.js/lib/js/head.min.js"></script>
-		<script src="reveal.js/js/reveal.js"></script>
+        <section>
+        <section>
+        <h2 id="emph">Hypothesis #2</h2>
+        <p>
+          Can we predict sentiment using bag of words per review?
+        </p>
+        </section>
+        
+        <section>
+        <h2 id="emph">Preprocessing</h1>
+        With this method we use two packages provided by scikit-learn: <br/>
+        - <a href="http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html"> 
+        Count vectorizer </a> <br/>
+        & <br/>
+        - <a href="http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html"> Term-frequence inverse document-frequency </a> <br/>
+        </section>
+        <section>
+        <h2 id="emph">Preprocessing</h1>
+        <ul>
+        <li><font color="orange">Count Vectorizer</font> - performs stop word removal, stemming and vocabulary
+        inference if one is not passed in the constructor.</li>
+        <li><font color="orange">Tfidf</font> - which is used to normalize rows to a euclidean norm to 
+        counteract the effects of having frequently counted words from over
+        shadowing more interesting words.</li>
+        </ul>
+        </section>
 
-		<script>
+        <section>
+        <h2 id="emph">Classification</h1>
+        Again we use the SVM, but a slightly modified version called 
+        <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html"> SGDClassifier </a> which uses stochastic gradient descent.
+        </section>
 
-			// Full list of configuration options available at:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
 
-				transition: 'concave', // none/fade/slide/convex/concave/zoom
+        <section>
+        <h2 id="emph">Classification</h1>
 
-				// Optional reveal.js plugins
-				dependencies: [
-					{ src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'reveal.js/plugin/markdown/marked.js', condinew_atrain_datation: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
-					{ src: 'reveal.js/plugin/notes/notes.js', async: true }
-				]
-			});
+        With this classifier, we receive much better results: <br/>
+        <img src="confusion_matrix.png" alt="Confusion Matrix" height="300">
+        </section> 
+        <section>
+        <h2 id="emph">Results</h1>
+        On average, we were able to obtain about ~85-90% accuracy.
+        </section>
+        </section>
 
-		</script>
+        <section>
+        <h2 id="emph">Third party packages used: </h1>
+        <ul>
+        <li> <a href="https://github.com/OleanderSoftware/OleanderStemmingLibrary">Oleander stemming</a></li>
+        <li><a href="http://scikit-learn.org/stable"> Sckit-Learn</a> </li>
+        <li><a href="http://pandas.pydata.org/">Pandas</a> </li>
+        <li><a href="http://www.numpy.org/">Numpy</a> </li>
+        <li><a href="https://hadoop.apache.org/">Hadoop</a> </li>
+        </ul>
 
-	</body>
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="reveal.js/lib/js/head.min.js"></script>
+    <script src="reveal.js/js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'concave', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+        { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'reveal.js/plugin/markdown/marked.js', condinew_atrain_datation: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+        { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
 </html>
